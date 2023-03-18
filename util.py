@@ -7,7 +7,6 @@ import logging
 import os.path
 import random
 import sys
-from datetime import datetime
 from string import ascii_lowercase
 from time import sleep
 
@@ -216,10 +215,7 @@ class CommentSender:
                 if i == 0 and comment.get_attribute("value"):
                     comment.clear()
                 # generate comment value
-                generate_comment = self.generate_random_comment(self.total_comment_count + 1)
-                comment_value = generate_comment[0]
-                comment_timestamp = generate_comment[1]
-                comment_num = self.total_comment_count + 1
+                comment_value = self.generate_random_comment(self.total_comment_count + 1)
             except NoSuchElementException as _:
                 # cookies expired
                 logger_comment_sender.error(f"Please log in for account {self.account_name}")
@@ -285,16 +281,17 @@ class CommentSender:
         :param count_num: int
         :return: str
         """
-        timestamp = int(datetime.now().timestamp())
         with open("resources/random_text.txt") as file:
             random_item = random.choice(file.read().splitlines())
         with open("resources/weibo_emoji.txt") as file:
-            random_emoji = random.choice(file.read().splitlines())
+            emoji = file.read().splitlines()
+            random_emoji1 = random.choice(emoji)
+            random_emoji2 = random.choice(emoji)
         random_num = random.randint(1, 14)
         # generate random four letters 2 times, 1 put at the beginning, 2 put after {random_num} words
         random_letters = []
         for i in range(2):
             random_letters.append("".join(random.choice(ascii_lowercase) for _ in range(4)))
-        comment = f"{random_letters[0]}{count_num}{random_emoji}{random_item[:random_num]}" \
-                  f"{random_letters[1]}{random_item[random_num:]} t{timestamp}"
-        return [comment, timestamp]
+        comment = f"{random_letters[0]}{count_num}{random_emoji1}{random_item[:random_num]}" \
+                  f"{random_letters[1]}{random_item[random_num:]} {random_emoji2}"
+        return comment
