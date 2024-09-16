@@ -1,7 +1,7 @@
 """
 Save login information in the Chrome profile.
 """
-from util import Login
+from core.login import Login
 
 # fill in the account name to log in
 account_name = "xxx"
