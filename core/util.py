@@ -10,6 +10,8 @@ from selenium.webdriver.firefox.service import Service as FirefoxService
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 
+from core import pre_post_text
+
 
 def get_start_info(account_names, link_index, weibo_type):
     """
@@ -82,6 +84,27 @@ def generate_random_comment(count_num):
     comment = f"{random_letters[0]}{count_num}{random_emoji1}{random_item[:random_num]}" \
               f"{random_letters[1]}{random_item[random_num:]} {random_emoji2}"
     return comment
+
+
+def generate_random_post():
+    """
+    Generate post with random letters and random emojis.
+    :return: str
+    """
+    with open("resources/random_text_ahz.txt") as file:
+        random_item = random.choice(file.read().splitlines())
+    with open("resources/weibo_emoji.txt") as file:
+        emoji = file.read().splitlines()
+        random_emoji1 = random.choice(emoji)
+        random_emoji2 = random.choice(emoji)
+    random_num = random.randint(1, 14)
+    # generate random four letters 2 times, 1 put at the beginning, 2 put after {random_num} words
+    random_letters = []
+    for i in range(2):
+        random_letters.append("".join(random.choice(ascii_lowercase) for _ in range(4)))
+    post_value = f"{pre_post_text} {random_letters[0]}{random_emoji1}{random_item[:random_num]}" \
+              f"{random_letters[1]}{random_item[random_num:]} {random_emoji2}"
+    return post_value
 
 
 def activate_chrome_driver(account_name):

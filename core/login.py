@@ -30,7 +30,7 @@ class Login:
         """
         Save login information in Chrome profiles for Weibo Accounts.
         """
-        driver.implicitly_wait(10)
+        driver.implicitly_wait(100)
         driver.get(weibo_login_url)
         driver.find_element(
             by=By.XPATH, value="//*[@id='pl_login_form']/div/div[1]/a").click()
