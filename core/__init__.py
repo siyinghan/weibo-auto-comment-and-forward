@@ -42,5 +42,8 @@ logger_comment_sender = logging.getLogger("CS")
 logger_comment_sender.addFilter(color_filter)
 
 weibo_login_url = "https://weibo.com/login.php"
-chaohua_url = "https://weibo.com/p/100808b503e94e4f2f272c6e1cf79b59c41085"
-pre_post_text = "#龚俊# 俊味仙 #龚俊苏暮雨# ｜#龚俊 暗河传# https://video.weibo.com/show?fid=1034:5044801683521611"
+pre_post_text = "#龚俊# 俊味仙 #龚俊苏暮雨# ｜#龚俊 暗河传#"
+post_link = "https://video.weibo.com/show?fid=1034:5044801683521611"
+chaohua_urls = ["https://weibo.com/p/100808241b9ceecb561bd8de83d5e2f69b3beb",
+                "https://weibo.com/p/100808d3fa73b65abd6f2e91cf143c1726319f",
+                "https://weibo.com/p/100808b503e94e4f2f272c6e1cf79b59c41085"]
