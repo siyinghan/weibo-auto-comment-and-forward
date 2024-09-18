@@ -4,8 +4,8 @@ from time import sleep
 from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
 
-from core import weibo_login_url, chaohua_url
-from core.util import activate_chrome_driver, generate_random_comment, generate_random_post
+from core import weibo_login_url, chaohua_urls
+from core.util import activate_chrome_driver, generate_random_post
 
 
 class WeiboPoster:
@@ -37,13 +37,24 @@ class WeiboPoster:
         """
         # need to go to the login page first to log in
         self.driver.get(weibo_login_url)
-        sleep(1)
-        self.driver.get(chaohua_url)
-        logging.info(f"Open '{self.account_name}' to post Weibo")
         sleep(4)
+        logging.info(f"Log in with '{self.account_name}'")
+
+        # register in Chaohua
+        for chaohua in chaohua_urls:
+            self.driver.get(chaohua)
+            sleep(6)
+            register_button = self.driver.find_element(
+                by=By.XPATH,
+                value="//*[@id='Pl_Core_StuffHeader__1']/div/div[2]/div/div[3]/div/div[3]/a")
+            register_button.click()
+            logging.info(f"Register '{self.account_name}' in '{chaohua}'")
+            sleep(2)
 
         # post Weibo
-        for i in range(7):
+        self.driver.refresh()
+        sleep(4)
+        for i in range(6):
             try:
                 textarea = self.driver.find_element(
                     by=By.XPATH,
@@ -66,5 +77,5 @@ class WeiboPoster:
             if checkbox.is_selected(): checkbox.click()
             sleep(1)
             submit.click()
-            logging.info(f"Post from '{self.account_name}': '{post_value}'")
+            logging.info(f"Post on behalf of '{self.account_name}': '{post_value}'")
             sleep(4)

@@ -10,7 +10,7 @@ from selenium.webdriver.firefox.service import Service as FirefoxService
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 
-from core import pre_post_text
+from core import pre_post_text, post_link
 
 
 def get_start_info(account_names, link_index, weibo_type):
@@ -97,13 +97,8 @@ def generate_random_post():
         emoji = file.read().splitlines()
         random_emoji1 = random.choice(emoji)
         random_emoji2 = random.choice(emoji)
-    random_num = random.randint(1, 14)
-    # generate random four letters 2 times, 1 put at the beginning, 2 put after {random_num} words
-    random_letters = []
-    for i in range(2):
-        random_letters.append("".join(random.choice(ascii_lowercase) for _ in range(4)))
-    post_value = f"{pre_post_text} {random_letters[0]}{random_emoji1}{random_item[:random_num]}" \
-              f"{random_letters[1]}{random_item[random_num:]} {random_emoji2}"
+    random_letters = ["".join(random.choice(ascii_lowercase) for _ in range(4))]
+    post_value = f"{pre_post_text} {random_letters[0]}{random_emoji1}{random_item}{random_emoji2}{post_link}"
     return post_value
 
 
