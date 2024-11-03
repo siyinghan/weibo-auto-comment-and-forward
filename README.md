@@ -2,14 +2,36 @@
 
 ## Quickstart
 
-### Preparation
+### Environment Preparation
+
+1. Install [conda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html)
+2. Create new conda environment
+   ```zsh
+   conda create --name weibo
+   ```
+3. Activate the new environment
+   ```zsh
+   conda activate weibo
+   ```
+4. Install packages
+   ```zsh
+   conda install conda-forge::selenium
+   ```
+   ```zsh
+   conda install conda-forge::webdriver-manager
+   ```
+   ```zsh
+   conda install anaconda::termcolor
+   ```
+
+### Chrome Preparation
 
 Need to install Chrome in advance.
 
 Chrome profile folder:
 
 ```zsh
-$ open ~/Library/Application\ Support/Google/Chrome
+open ~/Library/Application\ Support/Google/Chrome
 ```
 
 ### Chrome Login
@@ -17,7 +39,7 @@ $ open ~/Library/Application\ Support/Google/Chrome
 1. Create Weibo accounts information file.
     1. Create an empty `json` file in the project **resources** folder.
        ```zsh
-       $ touch resources/accounts.json
+       touch resources/accounts.json
        ```
     2. Fill in the account names, the accordant profile names,
        and the number that the account can comment (**20** in the example).
@@ -36,7 +58,7 @@ $ open ~/Library/Application\ Support/Google/Chrome
 
 2. Fill in the `account_name` instead of "xxx" in `login_chrome.py`, then run `login_chrome.py` to log in.
    ```zsh
-   $ python login_chrome.py
+   python login_chrome.py
    ```
 
 3. Scan the QR code in the automated browser to save the login information.
@@ -45,7 +67,7 @@ $ open ~/Library/Application\ Support/Google/Chrome
 
 1. Create an empty `json` file in the project **resources** folder:
    ```zsh
-   $ touch resources/data.json
+   touch resources/data.json
    ```
 
 2. Add a dictionary in the list of ***weibo_details*** when there is a new Weibo that needs comments.
@@ -81,5 +103,5 @@ $ open ~/Library/Application\ Support/Google/Chrome
 
 2. Start comments and like.
    ```zsh
-   $ python main.py
+   python main.py
    ```
