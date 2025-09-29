@@ -4,5 +4,8 @@
 # IntelliJ IDEA
 .idea
 
+# virtual environment
+venv/
+
 *.log
 *.json

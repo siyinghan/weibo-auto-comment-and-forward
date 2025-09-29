@@ -54,7 +54,7 @@ class WeiboPoster:
         # post Weibo
         self.driver.refresh()
         sleep(4)
-        for i in range(6):
+        for i in range(2):
             try:
                 textarea = self.driver.find_element(
                     by=By.XPATH,

@@ -4,25 +4,11 @@
 
 ### Environment Preparation
 
-1. Install [conda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html)
-2. Create new conda environment
-   ```zsh
-   conda create --name weibo
-   ```
-3. Activate the new environment
-   ```zsh
-   conda activate weibo
-   ```
-4. Install packages
-   ```zsh
-   conda install conda-forge::selenium
-   ```
-   ```zsh
-   conda install conda-forge::webdriver-manager
-   ```
-   ```zsh
-   conda install anaconda::termcolor
-   ```
+```zsh
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
 
 ### Chrome Preparation
 
