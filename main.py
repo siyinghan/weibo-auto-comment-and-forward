@@ -6,7 +6,9 @@ from core.post_in_chaohua import WeiboPoster
 from core.send_comment import CommentSender
 from core.util import get_start_info
 
-accounts = ["account 1", "account 2", "account 3"]
+# accounts = ["太阳", "舔狗", "卷卷", "big_414", "啊大777", "喵啊啊", "TTTTTS13"]
+# accounts = ["舔狗", "卷卷", "big_414", "啊大777", "喵啊啊", "TTTTTS13"]
+accounts = ["TTTTTS13", "喵啊啊", "啊大777", "big_414", "卷卷", "舔狗", "太阳"]
 link_index = 0
 
 if __name__ == "__main__":

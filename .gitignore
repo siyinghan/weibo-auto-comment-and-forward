@@ -9,3 +9,7 @@ venv/
 
 *.log
 *.json
+
+# Chaohua failure diagnostics
+log/chaohua-*.png
+log/chaohua-*.html

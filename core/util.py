@@ -91,7 +91,7 @@ def generate_random_post():
     Generate post with random letters and random emojis.
     :return: str
     """
-    with open("resources/random_text_ahz.txt") as file:
+    with open("resources/random_text_bygq.txt") as file:
         random_item = random.choice(file.read().splitlines())
     with open("resources/weibo_emoji.txt") as file:
         emoji = file.read().splitlines()
@@ -102,10 +102,12 @@ def generate_random_post():
     return post_value
 
 
-def activate_chrome_driver(account_name):
+def activate_chrome_driver(account_name, performance_logging=False):
     """
     Activate Selenium Chrome driver.
     :param account_name: str
+    :param performance_logging: bool, capture network events (used by the
+        Chaohua poster to read the publish API response)
     :return: driver
     """
     # get profile name
@@ -116,6 +118,8 @@ def activate_chrome_driver(account_name):
     options.add_argument(r"--user-data-dir=~/Library/Application Support/Google/Chrome")
     options.add_argument(rf"--profile-directory={profile}")
     options.add_argument("--disable-extensions")
+    if performance_logging:
+        options.set_capability("goog:loggingPrefs", {"performance": "ALL"})
     driver = webdriver.Chrome(options=options, service=Service(ChromeDriverManager().install()))
     driver.set_window_size(1400, 1000)
     return driver

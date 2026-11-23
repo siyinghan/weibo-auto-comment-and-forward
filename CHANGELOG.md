@@ -3,6 +3,17 @@
 All notable changes to the bonus-bot project will be documented in this file. The format is based
 on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [0.0.8] - 2026-11-23
+
+### Added
+
+- Added `account_switch_delay` (default 180 seconds) between accounts to avoid Weibo's
+  "访问频繁" rate limiting.
+
+### Fixed
+
+- Fixed Chaohua posting after the 2026 Chaohua redesign.
+
 ## [0.0.7] - 2025-09-29
 
 ### Changed
