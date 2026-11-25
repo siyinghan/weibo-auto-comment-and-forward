@@ -7,9 +7,24 @@
 # virtual environment
 venv/
 
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Chrome profile data created by --user-data-dir=~
+/~/
+
 *.log
 *.json
 
 # Chaohua failure diagnostics
 log/chaohua-*.png
 log/chaohua-*.html
+
+# Comment failure diagnostics
+log/comment-*.png
+log/comment-*.html
+
+# Forward failure diagnostics
+log/forward-*.png
+log/forward-*.html

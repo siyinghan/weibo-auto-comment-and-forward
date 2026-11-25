@@ -3,6 +3,34 @@
 All notable changes to the bonus-bot project will be documented in this file. The format is based
 on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [0.1.0] - 2026-11-25
+
+### Added
+
+- Added a root-level `config.py` as the single place for accounts, comment/forward
+  links, per-account counts, Chaohua settings and account delays.
+- Added `core/runner.py`: `main.py` now provides an interactive menu and a CLI
+  (`python main.py comment|forward|chaohua`, optional `--link`).
+- Added automatic target registration: a new Weibo link is appended to
+  `conf/comment_data.json` or `conf/forward_data.json` with counter 0 and is
+  reused on subsequent runs. `link_index` is no longer needed.
+- Added `core/targets.py` for link normalization, duplicate detection and data
+  file management.
+
+## [0.0.9] - 2026-11-23
+
+### Fixed
+
+- Fixed Weibo comments after the 2026 comment UI redesign: the sender now uses the new
+  `发布你的评论` composer, the WooUI `评论` button, and the `.wbpro-list` comment items
+  instead of the removed `#composerEle` markup.
+- Fixed Weibo forwards after the 2026 forward UI redesign: the forwarder now clicks the
+  main post's `转发` icon, uses the inline `说说分享心得` composer and `转发` button,
+  clears the quoted prefill, and waits for `转发成功` before updating `forward_data.json`.
+  Forward accounts also get per-account isolation.
+- Added a per-account run summary for comments and forwards, showing how many
+  items were sent and why an account stopped.
+
 ## [0.0.8] - 2026-11-23
 
 ### Added

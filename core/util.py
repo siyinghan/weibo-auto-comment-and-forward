@@ -1,4 +1,3 @@
-import json
 import logging
 import os
 import random
@@ -10,38 +9,52 @@ from selenium.webdriver.firefox.service import Service as FirefoxService
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 
-from core import pre_post_text, post_link
+from config import ACCOUNTS
+from core import comments_per_account, forwards_per_account, pre_post_text, post_link
+from core.targets import DATA_FILES, load_weibo_details
 
 
-def get_start_info(account_names, link_index, weibo_type):
+def _require_details_index(details, weibo_details_index, filename):
+    """
+    Make sure the resolved target index exists in the selected JSON file.
+    """
+    if not 0 <= weibo_details_index < len(details):
+        raise IndexError(
+            f"Target index={weibo_details_index} is out of range for {filename} "
+            f"({len(details)} entr{'y' if len(details) == 1 else 'ies'}; valid "
+            f"index 0-{len(details) - 1}). The data file may have changed while "
+            f"the task was running.")
+
+
+def get_start_info(account_names, weibo_details_index, weibo_type):
     """
     Log the running accounts information.
     :param account_names: List[str]
-    :param link_index: int
+    :param weibo_details_index: int
     :param weibo_type: str
     """
     account_dict = dict()
+    for account_name in account_names:
+        if account_name not in ACCOUNTS:
+            raise KeyError(
+                f"Account '{account_name}' is not defined in ACCOUNTS (config.py)")
+
     if weibo_type == "comment":
-        with open("conf/accounts.json", "r") as json_file:
-            data = json.load(json_file)
-            for account_name in account_names:
-                comment_num = data[account_name][1]
-                account_dict[account_name] = comment_num
-        with open("conf/comment_data.json", "r") as json_file:
-            data = json.load(json_file)
-            weibo_tag = data["weibo_details"][link_index]["tag"]
-            total_comment_count = data["weibo_details"][link_index]["total_comment_count"]
+        count_per_account = comments_per_account
     elif weibo_type == "forward":
-        with open("conf/accounts.json", "r") as json_file:
-            data = json.load(json_file)
-            for account_name in account_names:
-                comment_num = data[account_name][1]
-                account_dict[account_name] = comment_num
-        with open("conf/forward_data.json", "r") as json_file:
-            data = json.load(json_file)
-            weibo_tag = data["weibo_details"][link_index]["tag"]
-            total_comment_count = data["weibo_details"][link_index]["total_comment_count"]
-    logging.info(f"Start {account_dict} | {{'{weibo_tag}': {total_comment_count}}} ...")
+        count_per_account = forwards_per_account
+    else:
+        raise ValueError(f"Unknown weibo_type: {weibo_type}")
+
+    for account_name in account_names:
+        account_dict[account_name] = count_per_account
+
+    details = load_weibo_details(weibo_type)
+    _require_details_index(details, weibo_details_index, DATA_FILES[weibo_type])
+    target = details[weibo_details_index]
+    logging.info(
+        f"Start {account_dict} | "
+        f"{{'{target['tag']}': {target['total_comment_count']}}} ...")
 
 
 def get_details(weibo_details_index, weibo_type):
@@ -51,17 +64,10 @@ def get_details(weibo_details_index, weibo_type):
     :param weibo_type: str
     :return: [str, int]
     """
-    if weibo_type == "comment":
-        with open("conf/comment_data.json", "r") as json_file:
-            data = json.load(json_file)
-            weibo_link = data["weibo_details"][weibo_details_index]["link"]
-            total_comment_count = data["weibo_details"][weibo_details_index]["total_comment_count"]
-    elif weibo_type == "forward":
-        with open("conf/forward_data.json", "r") as json_file:
-            data = json.load(json_file)
-            weibo_link = data["weibo_details"][weibo_details_index]["link"]
-            total_comment_count = data["weibo_details"][weibo_details_index]["total_comment_count"]
-    return [weibo_link, total_comment_count]
+    details = load_weibo_details(weibo_type)
+    _require_details_index(details, weibo_details_index, DATA_FILES[weibo_type])
+    target = details[weibo_details_index]
+    return [target["link"], target["total_comment_count"]]
 
 
 def generate_random_comment(count_num):
@@ -102,6 +108,21 @@ def generate_random_post():
     return post_value
 
 
+def get_chrome_profile(account_name):
+    """
+    Return the Chrome profile name configured for an account in config.py.
+
+    The value may be a profile name string or the legacy
+    ``["profile name", count]`` list format.
+    """
+    try:
+        account = ACCOUNTS[account_name]
+    except KeyError:
+        raise KeyError(
+            f"Account '{account_name}' is not defined in ACCOUNTS (config.py)")
+    return account[0] if isinstance(account, list) else account
+
+
 def activate_chrome_driver(account_name, performance_logging=False):
     """
     Activate Selenium Chrome driver.
@@ -111,8 +132,7 @@ def activate_chrome_driver(account_name, performance_logging=False):
     :return: driver
     """
     # get profile name
-    with open("conf/accounts.json", "r") as json_file:
-        profile = json.load(json_file)[account_name][0]
+    profile = get_chrome_profile(account_name)
     # set driver
     options = webdriver.ChromeOptions()
     options.add_argument(r"--user-data-dir=~/Library/Application Support/Google/Chrome")

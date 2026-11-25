@@ -16,7 +16,14 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 
-from core import account_switch_delay, chaohua_names, chaohua_urls, signin_chaohua_urls
+from core import (
+    account_switch_delay,
+    chaohua_names,
+    chaohua_post_times,
+    chaohua_sync_to_weibo,
+    chaohua_urls,
+    signin_chaohua_urls,
+)
 from core.util import activate_chrome_driver, generate_random_post
 
 
@@ -39,11 +46,10 @@ class WeiboPoster:
     loop on the redesigned page.
     """
 
-    # How many posts to publish for every account.
-    POST_TIMES = 6
-    # The old code un-checked "同步到微博"; keep that behaviour so the
-    # posts only go to the Chaohua and not to the personal timeline.
-    SYNC_TO_WEIBO = False
+    # How many posts to publish for every account (config.py).
+    POST_TIMES = chaohua_post_times
+    # Whether to sync the post to the personal timeline (config.py).
+    SYNC_TO_WEIBO = chaohua_sync_to_weibo
 
     PUBLISH_BUTTON_TEXTS = ("发帖", "我来发一帖", "发帖互动")
     FOLLOW_BUTTON_TEXTS = ("加关注", "关注", "+关注")

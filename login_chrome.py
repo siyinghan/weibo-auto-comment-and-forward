@@ -3,7 +3,7 @@ Save login information in the Chrome profile.
 """
 from core.login import Login
 
-# fill in the account name to log in
+# fill in an account name defined in config.py ACCOUNTS
 account_name = "xxx"
 
 if __name__ == "__main__":

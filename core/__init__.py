@@ -41,33 +41,25 @@ color_filter = ColorFilter()
 logger_comment_sender = logging.getLogger("CS")
 logger_comment_sender.addFilter(color_filter)
 
+from config import (
+    CHAOHUA_NAMES, CHAOHUA_POST_LINK, CHAOHUA_POST_TIMES, CHAOHUA_PRE_POST_TEXT,
+    CHAOHUA_SWITCH_DELAY, CHAOHUA_SYNC_TO_WEIBO, CHAOHUA_URLS,
+    COMMENT_FORWARD_SWITCH_DELAY, COMMENTS_PER_ACCOUNT, FORWARDS_PER_ACCOUNT,
+    SIGNIN_CHAOHUA_URLS,
+)
+
 weibo_login_url = "https://weibo.com/login.php"
-pre_post_text = "#龚俊# 俊味仙 #龚俊孟剑卿# ｜#龚俊白衣公卿#"
-post_link = "https://video.weibo.com/show?fid=1034:5249538768699394"
-# 超话：暗河传、白衣公卿、凤舞九天、豹隐南山、龚俊温客行、龚俊
-chaohua_urls = ["https://weibo.com/p/100808241b9ceecb561bd8de83d5e2f69b3beb",
-                "https://weibo.com/p/10080837b798d2cfac00077133b309f2aac540",
-                "https://weibo.com/p/10080894303e1cc6c5cef797640704c240fcfb",
-                "https://weibo.com/p/1008083ce145cd2ed223247b5803187777c2b6",
-                "https://weibo.com/p/100808d3fa73b65abd6f2e91cf143c1726319f",
-                "https://weibo.com/p/100808b503e94e4f2f272c6e1cf79b59c41085"]
 
-# 超话名称：用于日志显示。新增超话链接时，在这里补一个名字即可；
-# 没有配置名字时会尝试从页面标题读取，最后才回退成链接。
-chaohua_names = {
-    "https://weibo.com/p/100808241b9ceecb561bd8de83d5e2f69b3beb": "暗河传",
-    "https://weibo.com/p/10080837b798d2cfac00077133b309f2aac540": "白衣公卿",
-    "https://weibo.com/p/10080894303e1cc6c5cef797640704c240fcfb": "凤舞九天",
-    "https://weibo.com/p/1008083ce145cd2ed223247b5803187777c2b6": "豹隐南山",
-    "https://weibo.com/p/100808d3fa73b65abd6f2e91cf143c1726319f": "龚俊温客行",
-    "https://weibo.com/p/100808b503e94e4f2f272c6e1cf79b59c41085": "龚俊",
-}
-
-# 需要签到的超话列表：默认和 chaohua_urls 相同。
-# 只签到、不发帖的超话，直接追加到这里，例如：
-# signin_chaohua_urls = list(chaohua_urls) + ["https://weibo.com/p/100808..."]
-# 发帖仍然只发在 chaohua_urls 的最后一个超话。
-signin_chaohua_urls = list(chaohua_urls)
-
-# 每个账号切换之间的等待秒数，避免微博提示“访问频繁”；建议不要小于 180。
-account_switch_delay = 180
+# Backward-compatible names used by the task modules.  The real settings live
+# in config.py at the project root.
+pre_post_text = CHAOHUA_PRE_POST_TEXT
+post_link = CHAOHUA_POST_LINK
+chaohua_urls = list(CHAOHUA_URLS)
+chaohua_names = dict(CHAOHUA_NAMES)
+signin_chaohua_urls = list(SIGNIN_CHAOHUA_URLS)
+comments_per_account = COMMENTS_PER_ACCOUNT
+forwards_per_account = FORWARDS_PER_ACCOUNT
+comment_forward_switch_delay = COMMENT_FORWARD_SWITCH_DELAY
+chaohua_post_times = CHAOHUA_POST_TIMES
+chaohua_sync_to_weibo = CHAOHUA_SYNC_TO_WEIBO
+account_switch_delay = CHAOHUA_SWITCH_DELAY
